@@ -16,6 +16,7 @@ public class TickTackToeGame : MonoBehaviour
     float[] Scales = {0.8f,0.6f, 0.5f};
     float[] distances = { 3, 2.5f, 2};
     float[] startsAt = { -3f, -3.75f, -4};
+    int win = 100; 
 
     bool startGame = false;
 
@@ -81,6 +82,8 @@ public class TickTackToeGame : MonoBehaviour
         );
 
         Map[x,y].transform.localScale = new Vector3(Scales[maxplayer - 2]-0.1f, Scales[maxplayer - 2] - 0.1f, Scales[maxplayer - 2] - 0.1f);
+        checkWin();
+        Debug.Log("WIN: " + win);
     }
 
     public void setPlayer(int value)
@@ -89,5 +92,75 @@ public class TickTackToeGame : MonoBehaviour
         maxplayer = value;
         startGame = true;
         GameObject.Find("ChooseMode").SetActive(false);
+    }
+
+    private void checkWin()
+    {
+        GameObject selected;
+        for(int j = 0; j < Map.GetLength(0) - 1; j++)
+        {
+            for (int i = 0; i < Map.GetLength(0) - 1; i++)
+            {
+                Debug.Log("ROW:" + j);
+                selected = Map[i, j];
+                if (selected.name == "Empty(Clone)")
+                    continue;
+
+                //Check Above if not in first line and not first or last in row
+                if(j > 0)
+                {
+                    Debug.Log("Checked UPPER");
+                    // UpLeft
+                    if (i > 0)
+                    {
+                        checkName(Map[i - 1, j - 1], selected);
+                    }
+                    // Up
+                    checkName(Map[i, j - 1], selected);
+                    
+                    if (i < Map.GetLength(0) -1)
+                    {
+                        // UpRight
+                        checkName(Map[i + 1, j - 1], selected);
+                    }
+                }
+                // Left
+                if (i > 0)
+                    checkName(Map[i - 1, j], selected);
+                // Right
+                if (i < Map.GetLength(0) - 1)
+                {
+                    if (checkName(Map[i + 1, j], selected) && checkName(Map[i + 2, j + 2], selected))
+                    {
+                        win = 123456789;
+                    }
+                }
+                     
+
+                if (j < Map.GetLength(0) - 1)
+                {
+                    Debug.Log(Map.GetLength(0) - 1);
+                    // DownLeft
+                    if (i > 0)
+                    {
+                        checkName(Map[i - 1, j + 1], selected);
+                    }
+                    // Down
+                    checkName(Map[i, j + 1], selected);
+
+                    if (i < Map.GetLength(0) - 1)
+                    {
+                        // DownRight
+                        if (checkName(Map[i + 1, j + 1], selected) && checkName(Map[i + 2, j + 2], selected))
+                            win = selectedPlayer;
+                    }
+                }
+            }
+        }
+    }
+    private bool checkName(GameObject gm1, GameObject gm2)
+    {
+        Debug.Log(gm1.name ==  gm2.name);
+        return gm1.name == gm2.name;
     }
 }
