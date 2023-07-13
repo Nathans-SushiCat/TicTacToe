@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static System.TimeZoneInfo;
 
 public class TickTackToeGame : MonoBehaviour
 {
@@ -13,26 +16,51 @@ public class TickTackToeGame : MonoBehaviour
     Color normalColor, selectedColor;
     int maxplayer = 0;
     int selectedPlayer = 0;
-    float[] Scales = {0.8f,0.6f, 0.5f};
-    float[] distances = { 3, 2.5f, 2};
-    float[] startsAt = { -3f, -3.75f, -4};
-    int win = 100; 
-
+    float[] Scales = {0.8f,0.6f, 0.5f, 0, 0.22f};
+    float[] distances = { 3, 2.5f, 2 , 0, 1};
+    float[] startsAt = { -3f, -3.75f, -4, 0, -4};
+    bool gammeRunning = true;
     bool startGame = false;
+    float currentCameraRotationTime = -1; // small delay before rotation camera
 
     //Grid 4*4 1,25  2,5
 
     private void Update()
     {
+        //WIN SCREEN
+        if (!gammeRunning)
+        {
+            currentCameraRotationTime += Time.deltaTime;
+
+            // Calculate the interpolation value (between 0 and 1)
+            float t = Mathf.Clamp01(currentCameraRotationTime / 0.5f);
+            Camera.main.transform.localRotation = Quaternion.Lerp(Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 30, 10), t);
+            
+            for(int i = 0; i < playerCanvasObjects.GetLength(0); i++)
+            {
+                playerCanvasObjects[i].SetActive(false);
+            }
+            
+            // Check if the transition is complete
+            if (t >= 1f)
+            {
+                // Transition is complete
+                Debug.Log("Show Stats");
+            
+
+            
+            }
+        }
+
+        //Back To Menu Selection
+        if (Input.GetKey(KeyCode.Escape))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
         if (!startGame)
         {
             return;
         }
 
-
-
-        normalColor = Color.white;
-        selectedColor = Color.blue;
         for (int i = 0; i < playerCanvasObjects.Length; i++)
         {
             playerCanvasObjects[i].SetActive(false);
@@ -57,19 +85,24 @@ public class TickTackToeGame : MonoBehaviour
                 Map[i, j].GetComponent<EmptySpace>().setPos(i, j);
             }
         }
+        selectedPlayer = Random.Range(0, maxplayer);
+        playerCanvasObjects[selectedPlayer].GetComponent<CanvasRenderer>().SetColor(Color.red);
+        
         startGame = false;
     }
     public void setPos(int x, int y)
     {
+        if (!gammeRunning)
+            return;
+
         selectedPlayer = selectedPlayer < maxplayer ? (selectedPlayer += 1) : 1;
         
-        for (int i = 0; i < maxplayer-1; i++)
+        for (int i = 0; i < maxplayer; i++)
         {
-
-            //playerCanvasObjects[i].GetComponent<Renderer>().GetComponentInChildren<TMP_Text>().color = Color.white;
+            playerCanvasObjects[i].GetComponent<CanvasRenderer>().SetColor(Color.white);
         }
 
-        //playerCanvasObjects[selectedPlayer].GetComponent<Renderer>().GetComponentInChildren<TMP_Text>().color = Color.red;
+        playerCanvasObjects[selectedPlayer == maxplayer ? 0 : selectedPlayer].GetComponent<CanvasRenderer>().SetColor(Color.red);
 
         Destroy(Map[x,y]);
         Debug.Log(selectedPlayer);
@@ -83,7 +116,6 @@ public class TickTackToeGame : MonoBehaviour
 
         Map[x,y].transform.localScale = new Vector3(Scales[maxplayer - 2]-0.1f, Scales[maxplayer - 2] - 0.1f, Scales[maxplayer - 2] - 0.1f);
         checkWin();
-        Debug.Log("WIN: " + win);
     }
 
     public void setPlayer(int value)
@@ -94,73 +126,91 @@ public class TickTackToeGame : MonoBehaviour
         GameObject.Find("ChooseMode").SetActive(false);
     }
 
+    GameObject GetItemAt(int rows, int cols)
+    {
+        return Map[rows, cols];
+    }
+
     private void checkWin()
     {
-        GameObject selected;
-        for(int j = 0; j < Map.GetLength(0) - 1; j++)
+        int rowsColsLength = Map.GetLength(0);
+
+        for(int rows = 0; rows < rowsColsLength; rows++) 
         {
-            for (int i = 0; i < Map.GetLength(0) - 1; i++)
+            for (int cols = 0; cols < rowsColsLength; cols++)
             {
-                Debug.Log("ROW:" + j);
-                selected = Map[i, j];
-                if (selected.name == "Empty(Clone)")
+                GameObject currentItem = GetItemAt(rows, cols);
+                if (currentItem.name == "Empty(Clone)")
                     continue;
 
-                //Check Above if not in first line and not first or last in row
-                if(j > 0)
+                foreach (var item in CheckSurroundingPoints(rows, cols))
                 {
-                    Debug.Log("Checked UPPER");
-                    // UpLeft
-                    if (i > 0)
+                    if (rowsColsLength > item.x &&
+                        rowsColsLength > item.y &&
+                        item.x >= 0 && item.y >= 0 &&
+                        currentItem.name == GetItemAt(item.x, item.y).name
+                       )
                     {
-                        checkName(Map[i - 1, j - 1], selected);
-                    }
-                    // Up
-                    checkName(Map[i, j - 1], selected);
-                    
-                    if (i < Map.GetLength(0) -1)
-                    {
-                        // UpRight
-                        checkName(Map[i + 1, j - 1], selected);
-                    }
-                }
-                // Left
-                if (i > 0)
-                    checkName(Map[i - 1, j], selected);
-                // Right
-                if (i < Map.GetLength(0) - 1)
-                {
-                    if (checkName(Map[i + 1, j], selected) && checkName(Map[i + 2, j + 2], selected))
-                    {
-                        win = 123456789;
-                    }
-                }
-                     
+                        highlightObj(currentItem);
+                        highlightObj(Map[item.x, item.y]);
+                        highlightObj(Map[(item.x+ rows) /2, (item.y + cols) / 2]);
+                        Debug.Log("Player: " + selectedPlayer);
+                        gammeRunning = false;   
 
-                if (j < Map.GetLength(0) - 1)
-                {
-                    Debug.Log(Map.GetLength(0) - 1);
-                    // DownLeft
-                    if (i > 0)
-                    {
-                        checkName(Map[i - 1, j + 1], selected);
-                    }
-                    // Down
-                    checkName(Map[i, j + 1], selected);
-
-                    if (i < Map.GetLength(0) - 1)
-                    {
-                        // DownRight
-                        if (checkName(Map[i + 1, j + 1], selected) && checkName(Map[i + 2, j + 2], selected))
-                            win = selectedPlayer;
                     }
                 }
             }
         }
+
     }
-    private bool checkName(GameObject gm1, GameObject gm2)
+
+    private void win()
     {
-        Debug.Log(gm1.name ==  gm2.name);
-        return gm1.name == gm2.name;
     }
+    private void highlightObj(GameObject gm)
+    {
+        gm.GetComponent<SpriteRenderer>().color = Color.red;
+    }
+
+    private IEnumerable<(int x, int y)> CheckSurroundingPoints(int x, int y)
+    {
+        int rowCount = this.Map.GetLength(0);
+        int colCount = this.Map.GetLength(1);
+
+        // Check the surrounding points
+        string centerValue = Map[x, y].name;
+
+        // Check DownLeft
+        if (x > 0 && y < colCount - 1 && Map[x - 1, y + 1].name == centerValue)
+            yield return (x-2, y+2);
+
+        // Check Left
+        if (x > 0 && Map[x - 1, y].name == centerValue)
+            yield return (x-2,y);
+
+        // Check UpLeft
+        if (x > 0 && y > 0 && Map[x - 1, y - 1].name == centerValue)
+            yield return (x-2,y-2);
+
+        // Check Up
+        if (y > 0 && Map[x, y - 1].name == centerValue)
+            yield return (x,y-2);
+
+        // Check UpRight
+        if (x < rowCount - 1 && y > 0 && Map[x + 1, y - 1].name == centerValue)
+            yield return (x+2,y-2);
+
+        // Check Right
+        if (x < rowCount - 1 && Map[x + 1, y].name == centerValue)
+            yield return (x+2,y);
+
+        // Check DownRight
+        if (x < rowCount - 1 && y < colCount - 1 && Map[x + 1, y + 1].name == centerValue)
+            yield return (x+2,y+2);
+
+        // Check Down
+        if (y < colCount - 1 && Map[x, y + 1].name == centerValue)
+            yield return (x,y+2);
+    }
+
 }
