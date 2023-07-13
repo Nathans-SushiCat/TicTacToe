@@ -13,14 +13,14 @@ public class TickTackToeGame : MonoBehaviour
     GameObject[,] Map;
     [SerializeField] GameObject[] grid;
     [SerializeField] GameObject[] playerCanvasObjects;
-    Color normalColor, selectedColor;
-    int maxplayer = 0;
+    [SerializeField] GameObject scoreCanvas;
+    public int maxplayer = 0;
     int selectedPlayer = 0;
     float[] Scales = {0.8f,0.6f, 0.5f, 0, 0.22f};
     float[] distances = { 3, 2.5f, 2 , 0, 1};
     float[] startsAt = { -3f, -3.75f, -4, 0, -4};
     bool gammeRunning = true;
-    bool startGame = false;
+    public bool startGame = false;
     float currentCameraRotationTime = -1; // small delay before rotation camera
 
     //Grid 4*4 1,25  2,5
@@ -46,20 +46,23 @@ public class TickTackToeGame : MonoBehaviour
             {
                 // Transition is complete
                 Debug.Log("Show Stats");
-            
-
-            
+                scoreCanvas.SetActive(true);
             }
         }
 
         //Back To Menu Selection
         if (Input.GetKey(KeyCode.Escape))
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            mainMenu();
+        
 
         if (!startGame)
         {
             return;
         }
+
+
+        //Deactivate Score Canvas
+        scoreCanvas.SetActive(false);
 
         for (int i = 0; i < playerCanvasObjects.Length; i++)
         {
@@ -87,7 +90,7 @@ public class TickTackToeGame : MonoBehaviour
         }
         selectedPlayer = Random.Range(0, maxplayer);
         playerCanvasObjects[selectedPlayer].GetComponent<CanvasRenderer>().SetColor(Color.red);
-        
+        setScorePlayer();
         startGame = false;
     }
     public void setPos(int x, int y)
@@ -116,11 +119,27 @@ public class TickTackToeGame : MonoBehaviour
 
         Map[x,y].transform.localScale = new Vector3(Scales[maxplayer - 2]-0.1f, Scales[maxplayer - 2] - 0.1f, Scales[maxplayer - 2] - 0.1f);
         checkWin();
+        setScorePlayer();
     }
 
+    public void setScorePlayer()
+    {
+        ScoreHandler h = gameObject.GetComponent<ScoreHandler>();
+        h.setPlayer(selectedPlayer);
+        h.WriteScore("Player " + selectedPlayer + " Wins");
+    }
+    public void mainMenu()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void CloseGame()
+    {
+        Application.Quit();
+    }
+    //Called By Buttons
     public void setPlayer(int value)
     {
-        grid[value-2].SetActive(true);
+        grid[value - 2].SetActive(true);
         maxplayer = value;
         startGame = true;
         GameObject.Find("ChooseMode").SetActive(false);
@@ -155,8 +174,7 @@ public class TickTackToeGame : MonoBehaviour
                         highlightObj(Map[item.x, item.y]);
                         highlightObj(Map[(item.x+ rows) /2, (item.y + cols) / 2]);
                         Debug.Log("Player: " + selectedPlayer);
-                        gammeRunning = false;   
-
+                        gammeRunning = false;
                     }
                 }
             }
@@ -164,9 +182,6 @@ public class TickTackToeGame : MonoBehaviour
 
     }
 
-    private void win()
-    {
-    }
     private void highlightObj(GameObject gm)
     {
         gm.GetComponent<SpriteRenderer>().color = Color.red;
