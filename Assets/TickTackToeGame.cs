@@ -19,7 +19,7 @@ public class TickTackToeGame : MonoBehaviour
     float[] Scales = {0.8f,0.6f, 0.5f, 0, 0.22f};
     float[] distances = { 3, 2.5f, 2 , 0, 1};
     float[] startsAt = { -3f, -3.75f, -4, 0, -4};
-    bool gammeRunning = true;
+    public bool gameRunning = true;
     public bool startGame = false;
     float currentCameraRotationTime = -1; // small delay before rotation camera
 
@@ -28,7 +28,7 @@ public class TickTackToeGame : MonoBehaviour
     private void Update()
     {
         //WIN SCREEN
-        if (!gammeRunning)
+        if (!gameRunning)
         {
             currentCameraRotationTime += Time.deltaTime;
 
@@ -45,7 +45,6 @@ public class TickTackToeGame : MonoBehaviour
             if (t >= 1f)
             {
                 // Transition is complete
-                Debug.Log("Show Stats");
                 scoreCanvas.SetActive(true);
             }
         }
@@ -95,7 +94,7 @@ public class TickTackToeGame : MonoBehaviour
     }
     public void setPos(int x, int y)
     {
-        if (!gammeRunning)
+        if (!gameRunning)
             return;
 
         selectedPlayer = selectedPlayer < maxplayer ? (selectedPlayer += 1) : 1;
@@ -108,7 +107,6 @@ public class TickTackToeGame : MonoBehaviour
         playerCanvasObjects[selectedPlayer == maxplayer ? 0 : selectedPlayer].GetComponent<CanvasRenderer>().SetColor(Color.red);
 
         Destroy(Map[x,y]);
-        Debug.Log(selectedPlayer);
         Map[x, y] = Instantiate(gm[selectedPlayer], 
             new Vector3(
                 x * distances[maxplayer - 2] + startsAt[maxplayer - 2],
@@ -120,6 +118,7 @@ public class TickTackToeGame : MonoBehaviour
         Map[x,y].transform.localScale = new Vector3(Scales[maxplayer - 2]-0.1f, Scales[maxplayer - 2] - 0.1f, Scales[maxplayer - 2] - 0.1f);
         checkWin();
         setScorePlayer();
+        checkTie();
     }
 
     public void setScorePlayer()
@@ -127,6 +126,11 @@ public class TickTackToeGame : MonoBehaviour
         ScoreHandler h = gameObject.GetComponent<ScoreHandler>();
         h.setPlayer(selectedPlayer);
         h.WriteScore("Player " + selectedPlayer + " Wins");
+    }
+    public void setScoreTie()
+    {
+        ScoreHandler h = gameObject.GetComponent<ScoreHandler>();
+        h.WriteScore("Tie : No one Wins");
     }
     public void mainMenu()
     {
@@ -149,7 +153,23 @@ public class TickTackToeGame : MonoBehaviour
     {
         return Map[rows, cols];
     }
-
+    private void checkTie()
+    {
+        bool containsEmptyObj = false;
+        for (int i = 0; i < Map.GetLength(0); i++)
+        {
+            for(int j = 0; j < Map.GetLength(1); j++)
+            {
+                if (Map[i, j].name == "Empty(Clone)")
+                    containsEmptyObj = true;
+            }
+        }
+        if (!containsEmptyObj)
+        {
+            setScoreTie();
+            gameRunning = containsEmptyObj;
+        }
+    }
     private void checkWin()
     {
         int rowsColsLength = Map.GetLength(0);
@@ -173,8 +193,7 @@ public class TickTackToeGame : MonoBehaviour
                         highlightObj(currentItem);
                         highlightObj(Map[item.x, item.y]);
                         highlightObj(Map[(item.x+ rows) /2, (item.y + cols) / 2]);
-                        Debug.Log("Player: " + selectedPlayer);
-                        gammeRunning = false;
+                        gameRunning = false;
                     }
                 }
             }

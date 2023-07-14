@@ -14,6 +14,7 @@ public class ScoreHandler : MonoBehaviour
     [SerializeField] TMP_Text ScoreText;
     [SerializeField] TMP_Text PlayerText;
     [SerializeField] TMP_Text TimeText;
+    bool scoreUploaded = false;
     int selPlayer = 10;
     TickTackToeGame game;
 
@@ -21,13 +22,27 @@ public class ScoreHandler : MonoBehaviour
     {
         game = gameObject.GetComponent<TickTackToeGame>();
         playerTimes = new float[PlayerTimeText.Length];
+
     }
 
     private void Update()
     {
-        Debug.Log(selPlayer);
-        if(game.maxplayer != 0 && selPlayer != 10)
+        
+        if (!game.gameRunning && !scoreUploaded)
+        {
+            Debug.Log("SETTTT");
+            GameLootLockerManager LL = gameObject.GetComponent<GameLootLockerManager>();
+            
+            LL.SubmitScore((int)score);
+            LL.FunnyMeme();
+
+            scoreUploaded = true;
+        }
+
+        if (game.maxplayer != 0 && selPlayer != 10)
             countTime();
+
+        score = (int)(time / 10f);
     }
     public void setPlayer(int p)
     {
@@ -49,5 +64,6 @@ public class ScoreHandler : MonoBehaviour
             PlayerTimeText[i].text = "Time Player " + (i+1) + ": "  + Math.Round(playerTimes[i],2).ToString() + " s"; 
         }
     }
+
 
 }
