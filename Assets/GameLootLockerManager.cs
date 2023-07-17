@@ -7,30 +7,49 @@ using UnityEngine.UI;
 
 public class GameLootLockerManager : MonoBehaviour
 {
-    public void FunnyMeme()
+    private void Start()
     {
-        Debug.Log("BAGUETTE");
+        StartCoroutine(LoginRoutine());
+    } 
+    IEnumerator LoginRoutine() {
+        bool done = false;
+        LootLockerSDKManager.StartGuestSession((response) =>
+        {
+            if (response.success)
+            {
+                Debug.Log("Succes");
+                done = true;
+            }
+            else
+            {
+                Debug.Log("Failed");
+                done = true;
+            }
+        });
+        yield return new WaitWhile(() => done == false);
     }
 
-    public void SubmitScore(int scoreToUpload)
+    public IEnumerator SubmitScore(int scoreToUpload)
     {
         Debug.Log("SUBMIT SCORE");
 
         bool done = false;
         string playerID = PlayerPrefs.GetString("PlayerID");
-
-        LootLockerSDKManager.SubmitScore(playerID, scoreToUpload, "schmekle", (LootLockerSubmitScoreResponse response) =>
-        {   
+        string ID = "schmekle";
+        
+        LootLockerSDKManager.SubmitScore(playerID, scoreToUpload, ID, (response) =>
+        {
             if (response.success)
             {
-                Debug.Log("Successfully uploaded");
+                Debug.Log("Succes");
                 done = true;
             }
             else
             {
-                Debug.Log("Failed" + response.Error);
+                Debug.Log("Failed");
                 done = true;
             }
         });
+        yield return new WaitWhile(() => done == false);
     }
 }

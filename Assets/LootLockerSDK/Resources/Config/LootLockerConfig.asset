@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: LootLockerConfig
   m_EditorClassIdentifier: 
   apiKey: dev_80e77f97b91d4abe99527c5d4f15cfbe
-  token: 
+  token: 9592eac6aaa7dd5ad9517e22899b845a201f44cb
   adminToken: 
   refreshToken: 
   domainKey: uq0mzdyt
   gameID: 0
-  game_version: 0.2.1
-  deviceID: defaultPlayerId
+  game_version: 0.3
+  deviceID: 3544e372-e6a7-457e-be43-5ccd0d93560c
   platform: 4
   developmentMode: 1
   url: https://api.lootlocker.io/v1
@@ -28,5 +28,5 @@ MonoBehaviour:
   userUrl: https://uq0mzdyt.api.lootlocker.io/game
   baseUrl: https://uq0mzdyt.api.lootlocker.io
   clientSideRequestTimeOut: 5
-  currentDebugLevel: 0
+  currentDebugLevel: 1
   allowTokenRefresh: 1

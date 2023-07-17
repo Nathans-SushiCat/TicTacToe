@@ -386,6 +386,7 @@ GameObject:
   - component: {fileID: 32500748}
   - component: {fileID: 32500750}
   - component: {fileID: 32500749}
+  - component: {fileID: 32500751}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -456,6 +457,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 32500747}
   m_CullTransparentMesh: 1
+--- !u!114 &32500751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32500747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e93cbcceb942d4bbaf18b9f12dad4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hostBtn: {fileID: 482971725}
+  clientBtn: {fileID: 301206325}
 --- !u!1 &68621258
 GameObject:
   m_ObjectHideFlags: 0
@@ -1143,10 +1158,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 230737436}
-  - component: {fileID: 230737435}
+  - component: {fileID: 230737443}
+  - component: {fileID: 230737442}
   - component: {fileID: 230737437}
   - component: {fileID: 230737440}
   - component: {fileID: 230737438}
+  - component: {fileID: 230737441}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1154,39 +1171,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &230737435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 230737434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9d89a65576e4e145a797867c23f2215, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gm:
-  - {fileID: 1974864880799520615, guid: 01f520b1c0d2cc94b814514857325905, type: 3}
-  - {fileID: 1896779566525630651, guid: 0fe88f663a8241d4d91a740072a6bcdd, type: 3}
-  - {fileID: 3042995805021514570, guid: 419e97c5cd5d00d428e7148dcfd0cece, type: 3}
-  - {fileID: 5189882357920170283, guid: d4ace0c01ca8ed3469a5ed353f3e44ef, type: 3}
-  - {fileID: 9015992867507316138, guid: 8cf03315131f9b44a975af18f1df3654, type: 3}
-  grid:
-  - {fileID: 562501868}
-  - {fileID: 228642008}
-  - {fileID: 1130818342}
-  - {fileID: 792945961}
-  - {fileID: 741892222}
-  playerCanvasObjects:
-  - {fileID: 1262801547}
-  - {fileID: 721037732}
-  - {fileID: 414882101}
-  - {fileID: 548602882}
-  scoreCanvas: {fileID: 772516430}
-  maxplayer: 0
-  gameRunning: 1
-  startGame: 0
 --- !u!4 &230737436
 Transform:
   m_ObjectHideFlags: 0
@@ -1331,6 +1315,53 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f494b48c7a6ac7443aa07ebdc3898b10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &230737441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230737434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1227463753
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &230737442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230737434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 837d1f14d5777cd41b7704e614486bfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gm: []
+  grid: []
+  playerCanvasObjects: []
+  scoreCanvas: {fileID: 0}
+  maxplayer: 0
+  gameRunning: 1
+  startGame: 0
+--- !u!114 &230737443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230737434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d070854e9f33aa4e809e0dfef5693e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &261610241
@@ -1514,7 +1545,7 @@ GameObject:
   - component: {fileID: 301206326}
   - component: {fileID: 301206325}
   m_Layer: 5
-  m_Name: 3P
+  m_Name: Client
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1584,19 +1615,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 301206326}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 230737435}
-        m_TargetAssemblyTypeName: TickTackToeGame, Assembly-CSharp
-        m_MethodName: setPlayer
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &301206326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2025,7 +2044,7 @@ GameObject:
   - component: {fileID: 482971726}
   - component: {fileID: 482971725}
   m_Layer: 5
-  m_Name: 2P
+  m_Name: Host
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2095,19 +2114,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 482971726}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 230737435}
-        m_TargetAssemblyTypeName: TickTackToeGame, Assembly-CSharp
-        m_MethodName: setPlayer
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &482971726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2978,6 +2985,105 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 594773664}
   m_CullTransparentMesh: 1
+--- !u!1 &674075768
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 674075771}
+  - component: {fileID: 674075770}
+  - component: {fileID: 674075769}
+  m_Layer: 0
+  m_Name: NetworkManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &674075769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674075768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6960e84d07fb87f47956e7a81d71c4e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ProtocolType: 0
+  m_MaxPacketQueueSize: 128
+  m_MaxPayloadSize: 6144
+  m_HeartbeatTimeoutMS: 500
+  m_ConnectTimeoutMS: 1000
+  m_MaxConnectAttempts: 60
+  m_DisconnectTimeoutMS: 30000
+  ConnectionData:
+    Address: 127.0.0.1
+    Port: 7777
+    ServerListenAddress: 
+  DebugSimulator:
+    PacketDelayMS: 0
+    PacketJitterMS: 0
+    PacketDropRate: 0
+--- !u!114 &674075770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674075768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 593a2fe42fa9d37498c96f9a383b6521, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RunInBackground: 1
+  LogLevel: 0
+  NetworkConfig:
+    ProtocolVersion: 0
+    NetworkTransport: {fileID: 674075769}
+    PlayerPrefab: {fileID: 0}
+    NetworkPrefabs:
+    - Override: 0
+      Prefab: {fileID: 230737434}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    TickRate: 30
+    ClientConnectionBufferTimeout: 10
+    ConnectionApproval: 0
+    ConnectionData: 
+    EnableTimeResync: 0
+    TimeResyncInterval: 30
+    EnsureNetworkVariableLengthSafety: 0
+    EnableSceneManagement: 1
+    ForceSamePrefabs: 1
+    RecycleNetworkIds: 1
+    NetworkIdRecycleDelay: 120
+    RpcHashSize: 0
+    LoadSceneTimeOut: 120
+    SpawnTimeout: 1
+    EnableNetworkLogs: 1
+--- !u!4 &674075771
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674075768}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 661.5222, y: 372.0142, z: 12.8516}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &721037732
 GameObject:
   m_ObjectHideFlags: 0
@@ -3390,7 +3496,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 4 Player
+  m_text: Comming Soon
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 27ede145246c6224e99361525255f9cf, type: 2}
   m_sharedMaterial: {fileID: 4818847359137599722, guid: 27ede145246c6224e99361525255f9cf, type: 2}
@@ -3417,8 +3523,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3629,7 +3735,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Exit
+  m_text: 'Back
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 27ede145246c6224e99361525255f9cf, type: 2}
   m_sharedMaterial: {fileID: 4818847359137599722, guid: 27ede145246c6224e99361525255f9cf, type: 2}
@@ -4372,7 +4480,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 3 Player
+  m_text: Join Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 27ede145246c6224e99361525255f9cf, type: 2}
   m_sharedMaterial: {fileID: 4818847359137599722, guid: 27ede145246c6224e99361525255f9cf, type: 2}
@@ -5167,19 +5275,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1264898089}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 230737435}
-        m_TargetAssemblyTypeName: TickTackToeGame, Assembly-CSharp
-        m_MethodName: setPlayer
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1264898089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5806,7 +5902,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 230737435}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TickTackToeGame, Assembly-CSharp
         m_MethodName: mainMenu
         m_Mode: 1
@@ -6027,7 +6123,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -100}
-  m_SizeDelta: {x: 305.2707, y: 71.8475}
+  m_SizeDelta: {x: 353.2849, y: 71.8475}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1467263848
 MonoBehaviour:
@@ -6049,7 +6145,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TIC TAC TOE
+  m_text: TIC TAC TOE Online
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 27ede145246c6224e99361525255f9cf, type: 2}
   m_sharedMaterial: {fileID: 4818847359137599722, guid: 27ede145246c6224e99361525255f9cf, type: 2}
@@ -7334,7 +7430,7 @@ GameObject:
   - component: {fileID: 1851783715}
   - component: {fileID: 1851783714}
   m_Layer: 5
-  m_Name: Exit
+  m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7405,9 +7501,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 230737435}
-        m_TargetAssemblyTypeName: TickTackToeGame, Assembly-CSharp
-        m_MethodName: CloseGame
+      - m_Target: {fileID: 230737442}
+        m_TargetAssemblyTypeName: MultiplayerGameManager, Assembly-CSharp
+        m_MethodName: BackToMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7648,7 +7744,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2 Player
+  m_text: Host Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 27ede145246c6224e99361525255f9cf, type: 2}
   m_sharedMaterial: {fileID: 4818847359137599722, guid: 27ede145246c6224e99361525255f9cf, type: 2}

@@ -1,13 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using static System.TimeZoneInfo;
 
-public class TickTackToeGame : MonoBehaviour
+public class MultiplayerGameManager : MonoBehaviour
 {
     [SerializeField] GameObject[] gm;
     GameObject[,] Map;
@@ -16,9 +12,9 @@ public class TickTackToeGame : MonoBehaviour
     [SerializeField] GameObject scoreCanvas;
     public int maxplayer = 0;
     int selectedPlayer = 0;
-    float[] Scales = {0.8f,0.6f, 0.5f, 0, 0.22f};
-    float[] distances = { 3, 2.5f, 2 , 0, 1};
-    float[] startsAt = { -3f, -3.75f, -4, 0, -4};
+    float[] Scales = { 0.8f, 0.6f, 0.5f, 0, 0.22f };
+    float[] distances = { 3, 2.5f, 2, 0, 1 };
+    float[] startsAt = { -3f, -3.75f, -4, 0, -4 };
     public bool gameRunning = true;
     public bool startGame = false;
     float currentCameraRotationTime = -1; // small delay before rotation camera
@@ -35,12 +31,12 @@ public class TickTackToeGame : MonoBehaviour
             // Calculate the interpolation value (between 0 and 1)
             float t = Mathf.Clamp01(currentCameraRotationTime / 0.5f);
             Camera.main.transform.localRotation = Quaternion.Lerp(Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 30, 10), t);
-            
-            for(int i = 0; i < playerCanvasObjects.GetLength(0); i++)
+
+            for (int i = 0; i < playerCanvasObjects.GetLength(0); i++)
             {
                 playerCanvasObjects[i].SetActive(false);
             }
-            
+
             // Check if the transition is complete
             if (t >= 1f)
             {
@@ -51,8 +47,8 @@ public class TickTackToeGame : MonoBehaviour
 
         //Back To Menu Selection
         if (Input.GetKey(KeyCode.Escape))
-            mainMenu();
-        
+            Reload();
+
 
         if (!startGame)
         {
@@ -67,7 +63,7 @@ public class TickTackToeGame : MonoBehaviour
         {
             playerCanvasObjects[i].SetActive(false);
         }
-        for(int i = 0; i < maxplayer; i++)
+        for (int i = 0; i < maxplayer; i++)
             playerCanvasObjects[i].SetActive(true);
 
         for (int i = 0; i < grid.Length; i++)
@@ -76,11 +72,11 @@ public class TickTackToeGame : MonoBehaviour
         }
 
         grid[maxplayer - 2].SetActive(true);
-        Map = new GameObject[maxplayer+1, maxplayer+1];
+        Map = new GameObject[maxplayer + 1, maxplayer + 1];
 
-        for (int i = 0; i < maxplayer+1; i++)
+        for (int i = 0; i < maxplayer + 1; i++)
         {
-            for (int j = 0; j < maxplayer+1; j++)
+            for (int j = 0; j < maxplayer + 1; j++)
             {
                 Map[i, j] = Instantiate(gm[0], new Vector3(i * distances[maxplayer - 2] + startsAt[maxplayer - 2], j * distances[maxplayer - 2] + startsAt[maxplayer - 2], 0), Quaternion.identity);
                 Map[i, j].transform.localScale = new Vector3(Scales[maxplayer - 2], Scales[maxplayer - 2], Scales[maxplayer - 2]);
@@ -98,7 +94,7 @@ public class TickTackToeGame : MonoBehaviour
             return;
 
         selectedPlayer = selectedPlayer < maxplayer ? (selectedPlayer += 1) : 1;
-        
+
         for (int i = 0; i < maxplayer; i++)
         {
             playerCanvasObjects[i].GetComponent<CanvasRenderer>().SetColor(Color.white);
@@ -106,8 +102,8 @@ public class TickTackToeGame : MonoBehaviour
 
         playerCanvasObjects[selectedPlayer == maxplayer ? 0 : selectedPlayer].GetComponent<CanvasRenderer>().SetColor(Color.red);
 
-        Destroy(Map[x,y]);
-        Map[x, y] = Instantiate(gm[selectedPlayer], 
+        Destroy(Map[x, y]);
+        Map[x, y] = Instantiate(gm[selectedPlayer],
             new Vector3(
                 x * distances[maxplayer - 2] + startsAt[maxplayer - 2],
                 y * distances[maxplayer - 2] + startsAt[maxplayer - 2],
@@ -115,7 +111,7 @@ public class TickTackToeGame : MonoBehaviour
             Quaternion.identity
         );
 
-        Map[x,y].transform.localScale = new Vector3(Scales[maxplayer - 2]-0.1f, Scales[maxplayer - 2] - 0.1f, Scales[maxplayer - 2] - 0.1f);
+        Map[x, y].transform.localScale = new Vector3(Scales[maxplayer - 2] - 0.1f, Scales[maxplayer - 2] - 0.1f, Scales[maxplayer - 2] - 0.1f);
         checkWin();
         setScorePlayer();
         checkTie();
@@ -132,13 +128,13 @@ public class TickTackToeGame : MonoBehaviour
         ScoreHandler h = gameObject.GetComponent<ScoreHandler>();
         h.WriteScore("Tie : No one Wins");
     }
-    public void mainMenu()
+    public void Reload()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    public void CloseGame()
+    public void BackToMainMenu()
     {
-        Application.Quit();
+        SceneManager.LoadScene("MainPlayingScene");
     }
 
     public void Multiplayer()
@@ -163,7 +159,7 @@ public class TickTackToeGame : MonoBehaviour
         bool containsEmptyObj = false;
         for (int i = 0; i < Map.GetLength(0); i++)
         {
-            for(int j = 0; j < Map.GetLength(1); j++)
+            for (int j = 0; j < Map.GetLength(1); j++)
             {
                 if (Map[i, j].name == "Empty(Clone)")
                     containsEmptyObj = true;
@@ -179,7 +175,7 @@ public class TickTackToeGame : MonoBehaviour
     {
         int rowsColsLength = Map.GetLength(0);
 
-        for(int rows = 0; rows < rowsColsLength; rows++) 
+        for (int rows = 0; rows < rowsColsLength; rows++)
         {
             for (int cols = 0; cols < rowsColsLength; cols++)
             {
@@ -197,7 +193,7 @@ public class TickTackToeGame : MonoBehaviour
                     {
                         highlightObj(currentItem);
                         highlightObj(Map[item.x, item.y]);
-                        highlightObj(Map[(item.x+ rows) /2, (item.y + cols) / 2]);
+                        highlightObj(Map[(item.x + rows) / 2, (item.y + cols) / 2]);
                         gameRunning = false;
                     }
                 }
@@ -221,35 +217,35 @@ public class TickTackToeGame : MonoBehaviour
 
         // Check DownLeft
         if (x > 0 && y < colCount - 1 && Map[x - 1, y + 1].name == centerValue)
-            yield return (x-2, y+2);
+            yield return (x - 2, y + 2);
 
         // Check Left
         if (x > 0 && Map[x - 1, y].name == centerValue)
-            yield return (x-2,y);
+            yield return (x - 2, y);
 
         // Check UpLeft
         if (x > 0 && y > 0 && Map[x - 1, y - 1].name == centerValue)
-            yield return (x-2,y-2);
+            yield return (x - 2, y - 2);
 
         // Check Up
         if (y > 0 && Map[x, y - 1].name == centerValue)
-            yield return (x,y-2);
+            yield return (x, y - 2);
 
         // Check UpRight
         if (x < rowCount - 1 && y > 0 && Map[x + 1, y - 1].name == centerValue)
-            yield return (x+2,y-2);
+            yield return (x + 2, y - 2);
 
         // Check Right
         if (x < rowCount - 1 && Map[x + 1, y].name == centerValue)
-            yield return (x+2,y);
+            yield return (x + 2, y);
 
         // Check DownRight
         if (x < rowCount - 1 && y < colCount - 1 && Map[x + 1, y + 1].name == centerValue)
-            yield return (x+2,y+2);
+            yield return (x + 2, y + 2);
 
         // Check Down
         if (y < colCount - 1 && Map[x, y + 1].name == centerValue)
-            yield return (x,y+2);
+            yield return (x, y + 2);
     }
 
 }

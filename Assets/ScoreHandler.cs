@@ -32,9 +32,8 @@ public class ScoreHandler : MonoBehaviour
         {
             Debug.Log("SETTTT");
             GameLootLockerManager LL = gameObject.GetComponent<GameLootLockerManager>();
-            
-            LL.SubmitScore((int)score);
-            LL.FunnyMeme();
+
+            StartCoroutine(LL.SubmitScore(1)); //LL.SubmitScore((int)score));
 
             scoreUploaded = true;
         }
